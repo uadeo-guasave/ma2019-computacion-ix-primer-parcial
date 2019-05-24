@@ -10,7 +10,9 @@ namespace Practica01
     {
       // Directorios();
       // Archivos();
-      MetodoDePrueba();
+      // MetodoDePrueba();
+      var prueba = ClaveDeLocalizacion.Inicializar("1-1-0001-0001-00-00-00-01");
+      Console.WriteLine(prueba.Correcta);
 
       Console.ReadLine();
     }
