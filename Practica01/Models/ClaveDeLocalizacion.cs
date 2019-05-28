@@ -1,23 +1,37 @@
 using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Practica01.Models
 {
   public class ClaveDeLocalizacion
   {
     // subsistema-sector-manzana-nivel-nivel-fraccion-toma
+    public int Id { get; set; }
+    [Required]
     public int Subsistema { get; set; }
+    [Required]
     public int Sector { get; set; }
+    [Required]
     public int Manzana { get; set; }
+    [Required]
     public int Lote { get; set; }
-    public int[] Nivel { get; set; } = new int[2];
+    [Required]
+    public int Nivel1 { get; set; }
+    [Required]
+    public int Nivel2 { get; set; }
+    [Required]
     public int Fraccion { get; set; }
+    [Required]
     public int Toma { get; set; }
+    [Required]
     public string Original { get; set; }
+    [NotMapped]
     public string Correcta
     {
       get
       {
-        return $"{Subsistema.ToString()}-{Sector.ToString().PadLeft(2, '0')}-{Manzana.ToString().PadLeft(4, '0')}-{Lote.ToString().PadLeft(4, '0')}-{Nivel[0].ToString().PadLeft(2, '0')}-{Nivel[1].ToString().PadLeft(2, '0')}-{Fraccion.ToString().PadLeft(2, '0')}-{Toma.ToString().PadLeft(2, '0')}";
+        return $"{Subsistema.ToString()}-{Sector.ToString().PadLeft(2, '0')}-{Manzana.ToString().PadLeft(4, '0')}-{Lote.ToString().PadLeft(4, '0')}-{Nivel1.ToString().PadLeft(2, '0')}-{Nivel2.ToString().PadLeft(2, '0')}-{Fraccion.ToString().PadLeft(2, '0')}-{Toma.ToString().PadLeft(2, '0')}";
       }
     }
 
@@ -32,15 +46,15 @@ namespace Practica01.Models
       nuevaClave.Lote = int.Parse(claveSeparada[3]);
       if (claveSeparada.Length == 8)
       {
-        nuevaClave.Nivel[0] = int.Parse(claveSeparada[4]);
-        nuevaClave.Nivel[1] = int.Parse(claveSeparada[5]);
+        nuevaClave.Nivel1 = int.Parse(claveSeparada[4]);
+        nuevaClave.Nivel2 = int.Parse(claveSeparada[5]);
         nuevaClave.Fraccion = int.Parse(claveSeparada[6]);
         nuevaClave.Toma = int.Parse(claveSeparada[7]);
       }
       else if (claveSeparada.Length == 7)
       {
-        nuevaClave.Nivel[0] = 0;
-        nuevaClave.Nivel[1] = int.Parse(claveSeparada[4]);
+        nuevaClave.Nivel1 = 0;
+        nuevaClave.Nivel2 = int.Parse(claveSeparada[4]);
         nuevaClave.Fraccion = int.Parse(claveSeparada[5]);
         nuevaClave.Toma = int.Parse(claveSeparada[6]);
       }

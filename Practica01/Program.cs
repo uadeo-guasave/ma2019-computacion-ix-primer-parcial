@@ -11,8 +11,15 @@ namespace Practica01
       // Directorios();
       // Archivos();
       // MetodoDePrueba();
-      var prueba = ClaveDeLocalizacion.Inicializar("1-1-0001-0001-00-00-00-01");
-      Console.WriteLine(prueba.Correcta);
+      // var prueba = ClaveDeLocalizacion.Inicializar("1-1-0001-0001-00-00-00-01");
+      // Console.WriteLine(prueba.Correcta);
+      using (var db = new SqliteContext())
+      {
+        db.Database.EnsureCreated();
+        var prueba = ClaveDeLocalizacion.Inicializar("1-1-0001-0001-00-00-00-01");
+        db.Add(prueba);
+        db.SaveChanges();
+      }
 
       Console.ReadLine();
     }
@@ -29,15 +36,15 @@ namespace Practica01
       nuevaClave.Lote = int.Parse(claveSeparada[3]);
       if (claveSeparada.Length == 8)
       {
-        nuevaClave.Nivel[0] = int.Parse(claveSeparada[4]);
-        nuevaClave.Nivel[1] = int.Parse(claveSeparada[5]);
+        nuevaClave.Nivel1 = int.Parse(claveSeparada[4]);
+        nuevaClave.Nivel2 = int.Parse(claveSeparada[5]);
         nuevaClave.Fraccion = int.Parse(claveSeparada[6]);
         nuevaClave.Toma = int.Parse(claveSeparada[7]);
       }
       else if (claveSeparada.Length == 7)
       {
-        nuevaClave.Nivel[0] = 0;
-        nuevaClave.Nivel[1] = int.Parse(claveSeparada[4]);
+        nuevaClave.Nivel1 = 0;
+        nuevaClave.Nivel2 = int.Parse(claveSeparada[4]);
         nuevaClave.Fraccion = int.Parse(claveSeparada[5]);
         nuevaClave.Toma = int.Parse(claveSeparada[6]);
       }
@@ -50,7 +57,7 @@ namespace Practica01
       Console.WriteLine($"Sector: {nuevaClave.Sector}");
       Console.WriteLine($"Manzana: {nuevaClave.Manzana}");
       Console.WriteLine($"Lote: {nuevaClave.Lote}");
-      Console.WriteLine($"Nivel: {nuevaClave.Nivel[0]}-{nuevaClave.Nivel[1]}");
+      Console.WriteLine($"Nivel: {nuevaClave.Nivel1}-{nuevaClave.Nivel2}");
       Console.WriteLine($"Fraccion: {nuevaClave.Fraccion}");
       Console.WriteLine($"Toma: {nuevaClave.Toma}");
       Console.WriteLine($"Correcta: {nuevaClave.Correcta}");
