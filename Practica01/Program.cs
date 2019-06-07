@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Practica01.Models;
 
@@ -9,17 +10,19 @@ namespace Practica01
     static void Main(string[] args)
     {
       // Directorios();
-      // Archivos();
+      Archivos();
       // MetodoDePrueba();
       // var prueba = ClaveDeLocalizacion.Inicializar("1-1-0001-0001-00-00-00-01");
       // Console.WriteLine(prueba.Correcta);
-      using (var db = new SqliteContext())
-      {
-        db.Database.EnsureCreated();
-        var prueba = ClaveDeLocalizacion.Inicializar("1-1-0001-0001-00-00-00-01");
-        db.Add(prueba);
-        db.SaveChanges();
-      }
+      // using (var db = new SqliteContext())
+      // {
+      //   db.Database.EnsureCreated();
+      //   var prueba = ClaveDeLocalizacion.Inicializar("1-1-0001-0001-00-00-00-01");
+      //   db.Add(prueba);
+      //   db.SaveChanges();
+      // }
+      // var c = new ClaveDeLocalizacion();
+      // Console.WriteLine(c.ToString());
 
       Console.ReadLine();
     }
@@ -68,14 +71,27 @@ namespace Practica01
       string ruta = @"/Users/bidkar/Documents/UDO/2019/Mayo-Agosto/Computacion9/PrimerParcial/Datos";
 
       var archivos = Directory.GetFiles(ruta);
+      var claves = new List<ClaveDeLocalizacion>();
       foreach (var a in archivos)
       {
         Console.WriteLine($"Archivo: {Path.GetFileName(a)}");
         var contenido = File.ReadAllLines(a);
+        var contador = 1;
         foreach (var linea in contenido)
         {
-          Console.WriteLine(linea);
+          if (contador > 1)
+          {
+            claves.Add(ClaveDeLocalizacion.Inicializar(linea.Replace("\"", "")));
+          }
+          contador++;
         }
+      }
+      using (var db = new SqliteContext())
+      {
+          db.Database.EnsureCreated();
+          db.AddRange(claves);
+          db.SaveChanges();
+          Console.WriteLine("Claves guardadas!");
       }
     }
 

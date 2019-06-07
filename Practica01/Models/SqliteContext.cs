@@ -26,6 +26,7 @@ namespace Practica01.Models
         clave.Property(c => c.Fraccion).HasColumnName("fraccion");
         clave.Property(c => c.Toma).HasColumnName("toma");
         clave.Property(c => c.Original).HasColumnName("original");
+        clave.Property(c => c.Correcta).HasColumnName("correcta");
         clave.ToTable("claves_de_localizacion");
       });
 

@@ -26,14 +26,8 @@ namespace Practica01.Models
     public int Toma { get; set; }
     [Required]
     public string Original { get; set; }
-    [NotMapped]
-    public string Correcta
-    {
-      get
-      {
-        return $"{Subsistema.ToString()}-{Sector.ToString().PadLeft(2, '0')}-{Manzana.ToString().PadLeft(4, '0')}-{Lote.ToString().PadLeft(4, '0')}-{Nivel1.ToString().PadLeft(2, '0')}-{Nivel2.ToString().PadLeft(2, '0')}-{Fraccion.ToString().PadLeft(2, '0')}-{Toma.ToString().PadLeft(2, '0')}";
-      }
-    }
+    [Required]
+    public string Correcta { get; set; }
 
     public static ClaveDeLocalizacion Inicializar(string clave)
     {
@@ -62,8 +56,15 @@ namespace Practica01.Models
       {
         throw new FormatException("El formato de la clave es incorrecto.");
       }
+      nuevaClave.Correcta = nuevaClave.ToString();
 
       return nuevaClave;
+    }
+
+    // sobreescribir toString()
+    override public string ToString()
+    {
+      return $"{Subsistema.ToString()}-{Sector.ToString().PadLeft(2, '0')}-{Manzana.ToString().PadLeft(4, '0')}-{Lote.ToString().PadLeft(4, '0')}-{Nivel1.ToString().PadLeft(2, '0')}-{Nivel2.ToString().PadLeft(2, '0')}-{Fraccion.ToString().PadLeft(2, '0')}-{Toma.ToString().PadLeft(2, '0')}";
     }
   }
 }
