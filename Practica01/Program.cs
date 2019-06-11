@@ -10,7 +10,7 @@ namespace Practica01
     static void Main(string[] args)
     {
       // Directorios();
-      Archivos();
+      // Archivos();
       // MetodoDePrueba();
       // var prueba = ClaveDeLocalizacion.Inicializar("1-1-0001-0001-00-00-00-01");
       // Console.WriteLine(prueba.Correcta);
@@ -88,10 +88,10 @@ namespace Practica01
       }
       using (var db = new SqliteContext())
       {
-          db.Database.EnsureCreated();
-          db.AddRange(claves);
-          db.SaveChanges();
-          Console.WriteLine("Claves guardadas!");
+        db.Database.EnsureCreated();
+        db.AddRange(claves);
+        db.SaveChanges();
+        Console.WriteLine("Claves guardadas!");
       }
     }
 
@@ -104,6 +104,14 @@ namespace Practica01
       foreach (var d in directorios)
       {
         Console.WriteLine($"Directorio: {d}");
+      }
+    }
+
+    private static void GuardarCSV()
+    {
+      using (var db = new SqliteContext())
+      {
+        // var claves = db.ClavesDeLocalizacion.
       }
     }
   }
