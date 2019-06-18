@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Text;
+using Microsoft.EntityFrameworkCore.Internal;
 using Practica01.Models;
 
 namespace Practica01
@@ -23,6 +26,7 @@ namespace Practica01
       // }
       // var c = new ClaveDeLocalizacion();
       // Console.WriteLine(c.ToString());
+      GuardarCSV();
 
       Console.ReadLine();
     }
@@ -109,10 +113,61 @@ namespace Practica01
 
     private static void GuardarCSV()
     {
+      // definir el buffer donde se guardaran las lineas procesadas
+      var buffer = new StringBuilder();
+
+      // obtener la primera linea
+      var primeraLinea = ObtenerPrimeraLinea();
+      // agregar la primera linea al buffer
+      buffer.AppendLine(primeraLinea);
+
+      // conectar a la db
       using (var db = new SqliteContext())
       {
-        // var claves = db.ClavesDeLocalizacion.
+        // obtener todos los registros de la tabla claves_de_localizacion
+        var registros = db.ClavesDeLocalizacion.ToList();
+        // obtener los nombres de columnas de tipo caracter
+        var colsCadena = (from p in typeof(ClaveDeLocalizacion).GetProperties()
+                          where p.PropertyType == typeof(string)
+                          select p.Name).ToList();
+
+        foreach (var r in registros)
+        {
+          // procesar las columnas de cada registro
+          // agregar al buffer los registros procesados
+        }
       }
+    }
+
+    private static string ObtenerPrimeraLinea()
+    {
+      // obtener los nombres de las propiedades publicas de la clase a guardar en csv
+      // var propiedades = typeof(ClaveDeLocalizacion).GetProperties().ToList();
+      // var propiedades = (from p in typeof(ClaveDeLocalizacion).GetProperties() select p.Name).ToList();
+      var propiedades = typeof(ClaveDeLocalizacion).GetProperties().Select(p => p.Name).ToList();
+      var propsRevisadas = new List<string>();
+      foreach (var p in propiedades)
+      {
+        // Console.Write(p + ",");
+        // revisar si tiene espacios la propiedad
+        // "texto con espacio".indexOf(" ") -> 5
+        if (p.IndexOf(" ") >= 0)
+        {
+          propsRevisadas.Add(ponerComillas(p));
+        }
+        else
+        {
+          propsRevisadas.Add(p);
+        }
+      }
+      // Console.WriteLine(string.Join(",", propiedades));
+      // Console.WriteLine(propiedades.Join(","));
+      return string.Join(",", propsRevisadas);
+    }
+
+    private static string ponerComillas(string p)
+    {
+      return "\"" + p + "\"";
     }
   }
 }
