@@ -26,6 +26,9 @@ namespace Practica01
       // }
       // var c = new ClaveDeLocalizacion();
       // Console.WriteLine(c.ToString());
+      // Preguntar si quieres guardar en formato CSV o TAB
+      // Preguntar si a todos los valores le ponen comillas
+      // Pedir el nombre del archivo (extension por default, csv o txt)
       GuardarCSV();
 
       Console.ReadLine();
@@ -135,7 +138,26 @@ namespace Practica01
         {
           // procesar las columnas de cada registro
           // agregar al buffer los registros procesados
+          var linea = new List<string>();
+          foreach (var p in r.GetType().GetProperties())
+          {
+            if (p.PropertyType == typeof(string))
+            {
+              linea.Add(ponerComillas(p.GetValue(r).ToString()));
+            }
+            else
+            {
+              linea.Add(p.GetValue(r).ToString());
+            }
+          }
+          buffer.AppendLine(string.Join(",", linea));
         }
+        
+        // Console.WriteLine(buffer);
+        // Escribir archivo CSV
+        var ruta = @"/Users/bidkar/Documents/UDO/2019/Mayo-Agosto/Computacion9/PrimerParcial/Datos/claves_de_localizacion.csv";
+        File.WriteAllText(ruta, buffer.ToString());
+        Console.WriteLine("Archivo escrito correctamente");
       }
     }
 
